@@ -32,12 +32,15 @@ export async function MovieUpdate(id: string, m: Movie) {
             where: {id: parseInt(id)},
             data: {
                 name: m.name,
-                year: m.year,
-                image: m.image
+                year: parseInt(m.year.toString()),
+                image: m.image instanceof Buffer
+                    ? m.image  // If it's already a Buffer, use it directly
+                    : (typeof m.image === 'string' ? Buffer.from(m.image, 'base64') : Buffer.from(''))  // If it's a base64 string, convert it; otherwise, empty buffer
             }
         })
     }catch(err){
         console.log("error updating movie", err);
+        throw err;
     }
 }
 
