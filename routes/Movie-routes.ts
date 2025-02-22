@@ -1,8 +1,11 @@
 import express from "express";
 import {Movie} from "../model/Movie";
 import {MovieAdd, getAllMovies, MovieUpdate, MovieDelete} from "../database/movie-data-store";
+import multer from "multer";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.post('/add',async (req,res,next)=>{
     console.log(req.body);
@@ -16,6 +19,7 @@ router.post('/add',async (req,res,next)=>{
         res.status(400).send("error adding movie");
     }
 })
+
 
 router.get('/view',async (req,res,next)=>{
 
