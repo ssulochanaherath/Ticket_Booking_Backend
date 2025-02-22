@@ -2,12 +2,12 @@ export class Movie {
     id: number;
     name: string;
     year: number;
-    image: Buffer;  // Change from Uint8Array to Buffer
+    image?: Buffer;  // Made optional
 
-    constructor(id: number, name: string, year: number, image: Buffer) {
+    constructor(id: number, name: string, year: number, image?: Buffer) {
         this.id = id;
         this.name = name;
-        this.year = year;
-        this.image = image;
+        this.year = Number(year); // Ensure it's always a number
+        this.image = image ?? Buffer.from(''); // Default empty buffer
     }
 }

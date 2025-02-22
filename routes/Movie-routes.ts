@@ -1,58 +1,59 @@
 import express from "express";
-import {Movie} from "../model/Movie";
-import {MovieAdd, getAllMovies, MovieUpdate, MovieDelete} from "../database/movie-data-store";
+import { Movie } from "../model/Movie";
+import { MovieAdd, getAllMovies, MovieUpdate, MovieDelete } from "../database/movie-data-store";
 import multer from "multer";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.post('/add',async (req,res,next)=>{
-    console.log(req.body);
+router.post('/add', upload.single('image'), async (req, res) => {
+    try {
+        const { name, year } = req.body;
+        const image = req.file ? req.file.buffer : Buffer.from('');
 
-    const movie: Movie= req.body;
-    try{
-        const addedMovie = await MovieAdd(movie);
-        res.send('Movie Added')
-    }catch(err){
-        console.log("error adding movie", err);
-        res.status(400).send("error adding movie");
+        const movie: Movie = { id: 0, name, year: parseInt(year), image };
+        await MovieAdd(movie);
+        res.send('Movie Added');
+    } catch (err) {
+        console.error("Error adding movie:", err);
+        res.status(400).send("Error adding movie");
     }
-})
+});
 
-
-router.get('/view',async (req,res,next)=>{
-
-    try{
-        const movies=  await getAllMovies();
+router.get('/view', async (req, res) => {
+    try {
+        const movies = await getAllMovies();
         res.json(movies);
-    }catch(err){
-        console.log("error getting movies", err);
+    } catch (err) {
+        console.error("Error getting movies:", err);
+        res.status(500).send("Error fetching movies");
     }
-})
+});
 
-router.put('/update/:name',async (req,res,next)=>{
-    const name: string= req.params.name;
-    const movie: Movie= req.body;
-    try{
-        await MovieUpdate(name,movie);
-        res.send('Movie Updated')
-        console.log('Movie Updated');
-    }catch(err){
-        console.log("error updating movie", err);
-        res.status(400).send("error updating movie");
+router.put('/update/:id', upload.single('image'), async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { name, year } = req.body;
+        const image = req.file ? req.file.buffer : undefined;
+
+        const movie: Partial<Movie> = { name, year: parseInt(year), image };
+        await MovieUpdate(id, movie);
+        res.send('Movie Updated');
+    } catch (err) {
+        console.error("Error updating movie:", err);
+        res.status(400).send("Error updating movie");
     }
-})
+});
 
-router.delete('/delete/:name',async (req,res,next)=>{
-    const name: string= req.params.name;
-    try{
-        await MovieDelete(name);
-        res.send('Movie Deleted')
-        console.log('Movie Deleted');
-    }catch(err){
-        console.log("error deleting movie", err);
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        await MovieDelete(req.params.id);
+        res.send('Movie Deleted');
+    } catch (err) {
+        console.error("Error deleting movie:", err);
+        res.status(400).send("Error deleting movie");
     }
-})
+});
 
-export default router
+export default router;

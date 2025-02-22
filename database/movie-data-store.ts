@@ -1,56 +1,61 @@
-import {PrismaClient} from "@prisma/client";
-import {Movie} from "../model/Movie";
+import { PrismaClient } from "@prisma/client";
+import { Movie } from "../model/Movie";
 
-const prisma =new PrismaClient();
+const prisma = new PrismaClient();
 
 export async function MovieAdd(m: Movie) {
-    try{
+    try {
         const newMovie = await prisma.movie.create({
             data: {
                 name: m.name,
-                year: parseInt(m.year.toString()),  // Ensures m.year is a string
-                image: Buffer.from('')
+                year: parseInt(m.year.toString()),
+                image: m.image ? new Uint8Array(m.image) : new Uint8Array() // Convert Buffer to Uint8Array
             }
-        })
-        console.log('Movie Added :', newMovie);
-    }catch(err){
-        console.log("error adding movie", err);
+        });
+        console.log("Movie Added:", newMovie);
+    } catch (err) {
+        console.log("Error adding movie", err);
     }
 }
-
+//
 export async function getAllMovies() {
-    try{
-        return await prisma.movie.findMany();
-    }catch(err){
-        console.log("error getting movies from prisma data",err);
+    try {
+        const movies = await prisma.movie.findMany();
+        return movies.map(movie => ({
+            ...movie,
+            image: movie.image ? `data:image/jpeg;base64,${Buffer.from(movie.image).toString('base64')}` : null
+        }));
+    } catch (err) {
+        console.log("Error getting movies from database", err);
+        throw err;
     }
 }
 
-export async function MovieUpdate(id: string, m: Movie) {
-    try{
-        await prisma.movie.update({
-            where: {id: parseInt(id)},
+
+export async function MovieUpdate(id: string, m: Partial<Movie>) {
+    try {
+        const updatedMovie = await prisma.movie.update({
+            where: { id: parseInt(id) },
             data: {
                 name: m.name,
-                year: parseInt(m.year.toString()),
-                image: m.image instanceof Buffer
-                    ? m.image  // If it's already a Buffer, use it directly
-                    : (typeof m.image === 'string' ? Buffer.from(m.image, 'base64') : Buffer.from(''))  // If it's a base64 string, convert it; otherwise, empty buffer
+                year: m.year ? parseInt(m.year.toString()) : undefined,
+                image: m.image ? m.image : undefined // Update image only if provided
             }
-        })
-    }catch(err){
-        console.log("error updating movie", err);
+        });
+        console.log("Movie Updated:", updatedMovie);
+        return updatedMovie;
+    } catch (err) {
+        console.error("Error updating movie", err);
         throw err;
     }
 }
 
 export async function MovieDelete(id: string) {
-    try{
-        await prisma.movie.delete({
-            where: {id: parseInt(id)}
-        });
-        console.log('Movie deleted :',id);
-    }catch(err){
-        console.log("error deleting movie", err);
+    try {
+        await prisma.movie.delete({ where: { id: parseInt(id) } });
+        console.log("Movie Deleted:", id);
+    } catch (err) {
+        console.error("Error deleting movie", err);
+        throw err;
     }
 }
