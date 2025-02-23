@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getSeatsCustomers, saveSeatsCustomer } from '../database/customerSeats-data-store';
+import {getSeatsCustomers, resetSeatsCustomers, saveSeatsCustomer} from '../database/customerSeats-data-store';
 
 const router = Router();
 
@@ -36,7 +36,17 @@ router.post('/add', async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-
-
+router.delete('/reset', async (req: Request, res: Response) => {
+    try {
+        await resetSeatsCustomers();
+        res.json({ message: 'All booked seats have been reset' });
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'Unknown error occurred' });
+        }
+    }
+});
 
 export default router;

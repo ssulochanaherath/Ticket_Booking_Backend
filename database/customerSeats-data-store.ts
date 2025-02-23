@@ -21,3 +21,12 @@ export const saveSeatsCustomer = async (name: string) => {
         throw new Error('Error saving seats customer');
     }
 };
+
+export const resetSeatsCustomers = async () => {
+    try {
+        return await prisma.seatsCustomer.deleteMany(); // Deletes all booked seats
+    } catch (error) {
+        throw new Error('Error resetting seats customers');
+    }
+};
+
