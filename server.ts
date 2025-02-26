@@ -3,6 +3,7 @@ import customerRoutes from "./routes/Customer-routes";
 import movieRoutes from "./routes/Movie-routes";
 import customerSeatsRoutes from "./routes/customerSeats-routes";
 import scheduleRoutes from "./routes/Schedule-routes";
+import userRoutes from "./routes/Signup-routes";
 
 const app = express();
 var cors = require("cors")
@@ -20,6 +21,7 @@ app.use("/Customer",customerRoutes);
 app.use("/Movie",movieRoutes);
 app.use("/CustomerSeats",customerSeatsRoutes);
 app.use("/Schedule",scheduleRoutes);
+app.use("/User",userRoutes);
 
 app.listen(3000,(err=>{
     console.log("server port 3000") ;
