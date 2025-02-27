@@ -27,7 +27,7 @@ router.get("/view", async (req, res) => {
 });
 
 // Get a specific ticket by id
-router.get("/update/:id", async (req, res) => {
+router.get("/view/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const ticket = await getTicketById(parseInt(id));
