@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { saveTicket, getAllTickets, getTicketById, deleteTicket } from "../database/ticket-data-store";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 const router = Router();
 
@@ -43,14 +45,14 @@ router.get("/view/:id", async (req, res) => {
 });
 
 // Delete a ticket by id
-router.delete("/delete/:id", async (req, res) => {
-    const { id } = req.params;
+router.delete("/reset", async (req, res) => {
     try {
-        const deletedTicket = await deleteTicket(parseInt(id));
-        res.status(200).json(deletedTicket);
+        // Delete all tickets from the database
+        await prisma.ticket.deleteMany();
+        res.status(200).json({ message: "All tickets have been deleted." });
     } catch (error) {
-        console.error("Error deleting ticket:", error);
-        res.status(500).json({ error: "Failed to delete ticket." });
+        console.error("Error resetting tickets:", error);
+        res.status(500).json({ error: "Failed to reset tickets." });
     }
 });
 

@@ -3,7 +3,7 @@ import { Ticket } from "../model/Ticket";
 
 const prisma = new PrismaClient();
 
-export async function saveTicket(ticketData: Omit<Ticket, "id">) {
+export async function saveTicket(ticketData: Ticket) {
     try {
         const seats = Array.isArray(ticketData.seats) ? ticketData.seats.map(String) : [];
         const newTicket = await prisma.ticket.create({
@@ -12,7 +12,7 @@ export async function saveTicket(ticketData: Omit<Ticket, "id">) {
                 seats: seats.join(", "), // Store as a comma-separated string
                 email: ticketData.email,
                 phone: ticketData.phone,
-            }
+             }
         });
         console.log("Ticket Saved:", newTicket);
         return newTicket;
@@ -21,7 +21,6 @@ export async function saveTicket(ticketData: Omit<Ticket, "id">) {
         throw err;
     }
 }
-
 
 export async function getAllTickets() {
     try {
