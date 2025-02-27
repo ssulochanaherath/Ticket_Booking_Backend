@@ -1,4 +1,5 @@
-Film Hall Ticket Booking Backend 🎬
+#Film Hall Ticket Booking Backend 🎬
+
 This is the backend for the Film Hall Ticket Booking System, built using Node.js, Express, Prisma, and MySQL. It provides a RESTful API to manage tickets, movies, schedules, seats, and user roles with authentication and authorization.
 
 Front-End URL
