@@ -12,7 +12,6 @@ export async function CustomerAdd(c: Customer ){
                 email: c.email,
                 phone: c.phone
             }
-
         })
         console.log('Customer Added :',newCustomer)
     }catch(err) {
