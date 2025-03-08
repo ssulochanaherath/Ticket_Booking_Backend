@@ -4,7 +4,6 @@ import { AddUser, getUserRoleByEmail} from "../database/signup-data-store";
 
 const router = express.Router();
 
-// Add this route to your Signup-routes.ts
 router.get('/role/:email', async (req: Request, res: Response) => {
     try {
         const { email } = req.params;

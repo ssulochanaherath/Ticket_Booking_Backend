@@ -3,7 +3,6 @@ import {getSeatsCustomers, resetSeatsCustomers, saveSeatsCustomer} from '../data
 
 const router = Router();
 
-// Get all seats customers
 router.get('/view', async (req: Request, res: Response) => {
     try {
         const seatsCustomers = await getSeatsCustomers();
@@ -17,7 +16,6 @@ router.get('/view', async (req: Request, res: Response) => {
     }
 });
 
-// Add a new seats customer
 router.post('/add', async (req: Request, res: Response): Promise<void> => {
     try {
         const { name } = req.body;
