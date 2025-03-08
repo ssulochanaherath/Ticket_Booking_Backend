@@ -21,7 +21,7 @@ router.post('/add', async (req: Request, res: Response): Promise<void> => {
         const { name } = req.body;
         if (!name) {
             res.status(400).json({ error: 'Name is required' } as { error: string });
-            return; // No need to return the response object, just stop the function execution
+            return;
         }
         const newCustomer = await saveSeatsCustomer(name);
         res.status(201).json(newCustomer);
