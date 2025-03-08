@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 const router = Router();
 
-// Create a new ticket
 router.post("/add", async (req, res) => {
     const { movie, seats, email, phone } = req.body;
     try {
@@ -17,7 +16,6 @@ router.post("/add", async (req, res) => {
     }
 });
 
-// Get all tickets
 router.get("/view", async (req, res) => {
     try {
         const tickets = await getAllTickets();
@@ -28,7 +26,6 @@ router.get("/view", async (req, res) => {
     }
 });
 
-// Get a specific ticket by id
 router.get("/view/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -44,7 +41,6 @@ router.get("/view/:id", async (req, res) => {
     }
 });
 
-// Delete a ticket by id
 router.delete("/reset", async (req, res) => {
     try {
         // Delete all tickets from the database
