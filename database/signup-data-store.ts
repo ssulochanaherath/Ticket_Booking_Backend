@@ -3,7 +3,6 @@ import { SignupModel } from '../model/Signup';
 
 const prisma = new PrismaClient();
 
-// Add this function to your signup-data-store.ts
 export async function getUserRoleByEmail(email: string) {
     try {
         const user = await prisma.user.findUnique({
