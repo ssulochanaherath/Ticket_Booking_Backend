@@ -30,7 +30,7 @@ export async function getAllSchedules(){
 export async function ScheduleUpdate(name: string, s: Schedule) {
     try {
         await prisma.schedule.update({
-            where: { name: name },  // Use name as the unique identifier
+            where: { name: name },
             data: {
                 name: s.name,
                 time: s.time,
