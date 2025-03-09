@@ -43,7 +43,6 @@ router.get("/view/:id", async (req, res) => {
 
 router.delete("/reset", async (req, res) => {
     try {
-        // Delete all tickets from the database
         await prisma.ticket.deleteMany();
         res.status(200).json({ message: "All tickets have been deleted." });
     } catch (error) {
