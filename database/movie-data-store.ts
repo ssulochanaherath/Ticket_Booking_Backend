@@ -17,7 +17,7 @@ export async function MovieAdd(m: Movie) {
         console.log("Error adding movie", err);
     }
 }
-//
+
 export async function getAllMovies() {
     try {
         const movies = await prisma.movie.findMany();
