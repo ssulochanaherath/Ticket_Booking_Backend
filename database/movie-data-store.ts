@@ -9,7 +9,7 @@ export async function MovieAdd(m: Movie) {
             data: {
                 name: m.name,
                 year: parseInt(m.year.toString()),
-                image: m.image ? new Uint8Array(m.image) : new Uint8Array() // Convert Buffer to Uint8Array
+                image: m.image ? new Uint8Array(m.image) : new Uint8Array()
             }
         });
         console.log("Movie Added:", newMovie);
