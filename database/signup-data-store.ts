@@ -7,11 +7,11 @@ export async function getUserRoleByEmail(email: string) {
     try {
         const user = await prisma.user.findUnique({
             where: { email: email },
-            select: { role: true },  // Only fetch the role
+            select: { role: true },
         });
 
         if (user) {
-            return user.role;  // Return the role if found
+            return user.role;
         } else {
             throw new Error('User not found');
         }
